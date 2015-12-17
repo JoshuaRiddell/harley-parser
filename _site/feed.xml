@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Harlie Development Tools</title>
+    <description>Some quick scripts developed to help with development of Harlie&#39;s conversational abilities.
+</description>
+    <link>http://joshuariddell.github.io/harley-parser/</link>
+    <atom:link href="http://joshuariddell.github.io/harley-parser/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Thu, 17 Dec 2015 23:37:39 +1000</pubDate>
+    <lastBuildDate>Thu, 17 Dec 2015 23:37:39 +1000</lastBuildDate>
+    <generator>Jekyll v3.0.1</generator>
+    
+      <item>
+        <title>Conversation Tree</title>
+        <description>&lt;p&gt;Type your &lt;code class=&quot;highlighter-rouge&quot;&gt;conversation tree&lt;/code&gt; into the top box and see the generated code below. When you are happy with your conversation, use the form at the bottom to submit to us!&lt;/p&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+
+var HEADER = &quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;?&gt;\n&lt;aiml version=\&quot;1.0\&quot;&gt;\n\n&lt;!--  topic --&gt;\n\n&quot;;
+var CATEGORY = &quot;&lt;category&gt;\n\n&lt;/category&gt;&quot;;
+
+var CAT_ARGS = [
+    
+];
+
+console.log(HEADER);
+
+console.log(&quot;hello world&quot;);
+
+&lt;/script&gt;
+
+&lt;h4&gt; Conversation Tree &lt;/h4&gt;
+
+&lt;textarea id=&quot;userInput&quot; class=&quot;user-input&quot;&gt;Hello world&lt;/textarea&gt;
+
+&lt;h4&gt; AIML Output &lt;/h4&gt;
+
+&lt;textarea id=&quot;userInput&quot; class=&quot;user-input&quot;&gt;Hello world&lt;/textarea&gt;
+
+&lt;h4&gt; Submission &lt;/h4&gt;
+&lt;p&gt;
+This is where the submission form will go.
+&lt;/p&gt;
+</description>
+        <pubDate>Thu, 17 Dec 2015 21:58:03 +1000</pubDate>
+        <link>http://joshuariddell.github.io/harley-parser/jekyll/update/2015/12/17/welcome-to-jekyll.html</link>
+        <guid isPermaLink="true">http://joshuariddell.github.io/harley-parser/jekyll/update/2015/12/17/welcome-to-jekyll.html</guid>
+        
+        
+        <category>jekyll</category>
+        
+        <category>update</category>
+        
+      </item>
+    
+  </channel>
+</rss>

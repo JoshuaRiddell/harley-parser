@@ -127,19 +127,10 @@
 }
 
 .footer-col-1 {
-    width: -webkit-calc(35% - (#{$spacing-unit} / 2));
-    width:         calc(35% - (#{$spacing-unit} / 2));
+    width: -webkit-calc(100% - (#{$spacing-unit} / 2));
+    width:         calc(100% - (#{$spacing-unit} / 2));
 }
 
-.footer-col-2 {
-    width: -webkit-calc(20% - (#{$spacing-unit} / 2));
-    width:         calc(20% - (#{$spacing-unit} / 2));
-}
-
-.footer-col-3 {
-    width: -webkit-calc(45% - (#{$spacing-unit} / 2));
-    width:         calc(45% - (#{$spacing-unit} / 2));
-}
 
 @include media-query($on-laptop) {
     .footer-col-1,
@@ -199,6 +190,11 @@
 /**
  * Posts
  */
+.backbutton {
+    margin-bottom: 10px;
+    padding: 3px;
+}
+
 .post-header {
     margin-bottom: $spacing-unit;
 }
@@ -211,6 +207,13 @@
     @include media-query($on-laptop) {
         font-size: 36px;
     }
+}
+
+.user-input {
+    width: 100%;
+    height: 200px;
+    resize: vertical;
+    margin-bottom: $spacing-unit;
 }
 
 .post-content {
