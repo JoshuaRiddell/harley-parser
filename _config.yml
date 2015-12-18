@@ -19,7 +19,7 @@ linguist_email: a.campbell@uq.edu.au
 description: > # this means to ignore newlines until "baseurl:"
   Some quick scripts developed to help with development of Harlie's
   conversational abilities.
-baseurl: "/harley-parser" # the subpath of your site, e.g. /blog
+baseurl: "/harley-tools" # the subpath of your site, e.g. /blog
 url: "http://joshuariddell.github.io" # the base hostname & protocol for your site
 github_username:  joshuariddell
 
