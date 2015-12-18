@@ -48,13 +48,14 @@ var updateCode = function() {
 	}
 
 	var topic = topicInput.value;
-	if (!topic) {
+	if (topic = "Topic Name") {
 		topic = "topicName"
 	}
 	CODE_OUTPUT_CACHE = HEADER.replace("{ topic }", topic);
 
 	var initialStatement = lineList.splice(0, 1)[0];
-	makeCategory()
+	CODE_OUTPUT_CACHE += makeCategory(topic.toLowerCase() + "topic", null, initialStatement);
+
 	makeAiml(initialStatement, lineList);
 	codeOutput.value = CODE_OUTPUT_CACHE;
 }
@@ -73,10 +74,11 @@ var makeAiml = function(that, lineList) {
 		for (var i=2; i < lineList.length; i++) {
 			if (space == getIndent(lineList[i])) {
 				last = i;
+				break
 			}
 		}
 		lineList.splice(0, 2);
-		makeAiml(template, lineList.splice(0, last + 1));
+		makeAiml(template, lineList.splice(0, last - 1));
 		return makeAiml(that, lineList)
 	}
 }

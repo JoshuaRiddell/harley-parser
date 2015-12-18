@@ -11,7 +11,7 @@
 
   <link rel="stylesheet" href="/harley-tools/css/main.css">
   <link rel="canonical" href="http://joshuariddell.github.io/harley-tools/conversation-tree">
-  <link rel="alternate" type="application/rss+xml" title="Harlie Development Tools" href="http://joshuariddell.github.io/harley-tools/feed.xml">
+  <link rel="alternate" type="application/rss+xml" title="Harley Development Tools" href="http://joshuariddell.github.io/harley-tools/feed.xml">
 </head>
 
 
@@ -21,7 +21,7 @@
 
   <div class="wrapper">
 
-    <a class="site-title" href="/harley-tools/">Harlie Development Tools</a>
+    <a class="site-title" href="/harley-tools/">Harley Development Tools</a>
 
     <nav class="site-nav">
       <a href="#" class="menu-icon">
@@ -114,13 +114,14 @@ var updateCode = function() {
 	}
 
 	var topic = topicInput.value;
-	if (!topic) {
+	if (topic = "Topic Name") {
 		topic = "topicName"
 	}
 	CODE_OUTPUT_CACHE = HEADER.replace("{ topic }", topic);
 
 	var initialStatement = lineList.splice(0, 1)[0];
-	makeCategory()
+	CODE_OUTPUT_CACHE += makeCategory(topic.toLowerCase() + "topic", null, initialStatement);
+
 	makeAiml(initialStatement, lineList);
 	codeOutput.value = CODE_OUTPUT_CACHE;
 }
@@ -139,10 +140,11 @@ var makeAiml = function(that, lineList) {
 		for (var i=2; i < lineList.length; i++) {
 			if (space == getIndent(lineList[i])) {
 				last = i;
+				break
 			}
 		}
 		lineList.splice(0, 2);
-		makeAiml(template, lineList.splice(0, last + 1));
+		makeAiml(template, lineList.splice(0, last - 1));
 		return makeAiml(that, lineList)
 	}
 }
@@ -224,14 +226,14 @@ This is where the submission form will go.
 
   <div class="wrapper">
 
-    <h2 class="footer-heading">Harlie Development Tools</h2>
+    <h2 class="footer-heading">Harley Development Tools</h2>
 
     <div class="footer-col-wrapper">
       <div class="footer-col footer-col-1">
         <ul class="contact-list">
           <li>For feature requests and bug reports, please contact:</li>
           <li><a href="mailto:joshuariddell@gmail.com">joshuariddell@gmail.com</a></li>
-          <li>For guidance on how to structure your conversations and to get involved in the harlie project, please contact:
+          <li>For guidance on how to structure your conversations and to get involved in the harley project, please contact:
 </li>
           <li><a href="mailto:a.campbell@uq.edu.au">a.campbell@uq.edu.au</a></li>
         </ul>

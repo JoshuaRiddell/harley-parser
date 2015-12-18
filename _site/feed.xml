@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Harlie Development Tools</title>
-    <description>Some quick scripts developed to help with development of Harlie&#39;s conversational abilities.
+    <title>Harley Development Tools</title>
+    <description>Some quick scripts developed to help with development of Harley&#39;s conversational abilities.
 </description>
     <link>http://joshuariddell.github.io/harley-tools/</link>
     <atom:link href="http://joshuariddell.github.io/harley-tools/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 18 Dec 2015 21:57:18 +1000</pubDate>
-    <lastBuildDate>Fri, 18 Dec 2015 21:57:18 +1000</lastBuildDate>
+    <pubDate>Fri, 18 Dec 2015 23:11:06 +1000</pubDate>
+    <lastBuildDate>Fri, 18 Dec 2015 23:11:06 +1000</lastBuildDate>
     <generator>Jekyll v3.0.1</generator>
     
       <item>
@@ -64,13 +64,14 @@ var updateCode = function() {
 	}
 
 	var topic = topicInput.value;
-	if (!topic) {
+	if (topic = &quot;Topic Name&quot;) {
 		topic = &quot;topicName&quot;
 	}
 	CODE_OUTPUT_CACHE = HEADER.replace(&quot;{ topic }&quot;, topic);
 
 	var initialStatement = lineList.splice(0, 1)[0];
-	makeCategory()
+	CODE_OUTPUT_CACHE += makeCategory(topic.toLowerCase() + &quot;topic&quot;, null, initialStatement);
+
 	makeAiml(initialStatement, lineList);
 	codeOutput.value = CODE_OUTPUT_CACHE;
 }
@@ -89,10 +90,11 @@ var makeAiml = function(that, lineList) {
 		for (var i=2; i &lt; lineList.length; i++) {
 			if (space == getIndent(lineList[i])) {
 				last = i;
+				break
 			}
 		}
 		lineList.splice(0, 2);
-		makeAiml(template, lineList.splice(0, last + 1));
+		makeAiml(template, lineList.splice(0, last - 1));
 		return makeAiml(that, lineList)
 	}
 }
