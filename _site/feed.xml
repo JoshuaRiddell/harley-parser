@@ -6,8 +6,8 @@
 </description>
     <link>http://joshuariddell.github.io/harley-parser/</link>
     <atom:link href="http://joshuariddell.github.io/harley-parser/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 17 Dec 2015 23:37:39 +1000</pubDate>
-    <lastBuildDate>Thu, 17 Dec 2015 23:37:39 +1000</lastBuildDate>
+    <pubDate>Fri, 18 Dec 2015 10:49:03 +1000</pubDate>
+    <lastBuildDate>Fri, 18 Dec 2015 10:49:03 +1000</lastBuildDate>
     <generator>Jekyll v3.0.1</generator>
     
       <item>
@@ -16,16 +16,26 @@
 
 &lt;script type=&quot;text/javascript&quot;&gt;
 
-var HEADER = &quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;?&gt;\n&lt;aiml version=\&quot;1.0\&quot;&gt;\n\n&lt;!--  topic --&gt;\n\n&quot;;
-var CATEGORY = &quot;&lt;category&gt;\n\n&lt;/category&gt;&quot;;
+var HEADER = &quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;?&gt;\n&lt;aiml version=\&quot;1.0\&quot;&gt;\n\n&lt;!-- { topic } topic --&gt;\n\n&quot;;
+var CATEGORY = &quot;&lt;category&gt;\n{ arguments }\n&lt;/category&gt;&quot;;
 
 var CAT_ARGS = [
-    
+    &quot;   &lt;pattern&gt;  &lt;/pattern&gt;\n&quot;,
+    &quot;   &lt;that&gt;  &lt;/that&gt;\n&quot;,
+    &quot;   &lt;template&gt;  &lt;/template&gt;&quot;
 ];
 
-console.log(HEADER);
+document.addEventListener(&quot;DOMContentLoaded&quot;, function() {
+    userInput = document.getElementById(&#39;userInput&#39;);
+    codeOutput = document.getElementById(&#39;codeOutput&#39;);
 
-console.log(&quot;hello world&quot;);
+    userInput.addEventListener(&#39;change&#39;)
+
+    console.log(userInput.value, codeOutput.value);
+});
+
+
+
 
 &lt;/script&gt;
 
@@ -35,7 +45,7 @@ console.log(&quot;hello world&quot;);
 
 &lt;h4&gt; AIML Output &lt;/h4&gt;
 
-&lt;textarea id=&quot;userInput&quot; class=&quot;user-input&quot;&gt;Hello world&lt;/textarea&gt;
+&lt;textarea id=&quot;codeOutput&quot; class=&quot;user-input&quot;&gt;Hello world&lt;/textarea&gt;
 
 &lt;h4&gt; Submission &lt;/h4&gt;
 &lt;p&gt;
@@ -43,8 +53,8 @@ This is where the submission form will go.
 &lt;/p&gt;
 </description>
         <pubDate>Thu, 17 Dec 2015 21:58:03 +1000</pubDate>
-        <link>http://joshuariddell.github.io/harley-parser/jekyll/update/2015/12/17/welcome-to-jekyll.html</link>
-        <guid isPermaLink="true">http://joshuariddell.github.io/harley-parser/jekyll/update/2015/12/17/welcome-to-jekyll.html</guid>
+        <link>http://joshuariddell.github.io/harley-parser/conversation-tree</link>
+        <guid isPermaLink="true">http://joshuariddell.github.io/harley-parser/conversation-tree</guid>
         
         
         <category>jekyll</category>

@@ -258,6 +258,9 @@ pre {
     float: none;
     width: -webkit-calc(100% - (30px / 2));
     width: calc(100% - (30px / 2)); } }
+.banner {
+  display: block; }
+
 /**
  * Page content
  */

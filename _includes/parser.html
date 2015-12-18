@@ -1,15 +1,25 @@
 <script type="text/javascript">
 
-var HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<aiml version=\"1.0\">\n\n<!-- {{ topic }} topic -->\n\n";
-var CATEGORY = "<category>\n{{ arguments }}\n</category>";
+var HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<aiml version=\"1.0\">\n\n<!-- { topic } topic -->\n\n";
+var CATEGORY = "<category>\n{ arguments }\n</category>";
 
 var CAT_ARGS = [
-    
+    "   <pattern> {{ args }} </pattern>\n",
+    "   <that> {{ args }} </that>\n",
+    "   <template> {{ args }} </template>"
 ];
 
-console.log(HEADER);
+document.addEventListener("DOMContentLoaded", function() {
+    userInput = document.getElementById('userInput');
+    codeOutput = document.getElementById('codeOutput');
 
-console.log("hello world");
+    userInput.addEventListener('change')
+
+    console.log(userInput.value, codeOutput.value);
+});
+
+
+
 
 </script>
 
@@ -19,7 +29,7 @@ console.log("hello world");
 
 <h4> AIML Output </h4>
 
-<textarea id="userInput" class="user-input">Hello world</textarea>
+<textarea id="codeOutput" class="user-input">Hello world</textarea>
 
 <h4> Submission </h4>
 <p>
