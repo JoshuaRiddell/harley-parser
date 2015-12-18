@@ -4,10 +4,10 @@
     <title>Harlie Development Tools</title>
     <description>Some quick scripts developed to help with development of Harlie&#39;s conversational abilities.
 </description>
-    <link>http://joshuariddell.github.io/harley-parser/</link>
-    <atom:link href="http://joshuariddell.github.io/harley-parser/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 18 Dec 2015 19:42:34 +1000</pubDate>
-    <lastBuildDate>Fri, 18 Dec 2015 19:42:34 +1000</lastBuildDate>
+    <link>http://joshuariddell.github.io/harley-tools/</link>
+    <atom:link href="http://joshuariddell.github.io/harley-tools/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Fri, 18 Dec 2015 21:57:18 +1000</pubDate>
+    <lastBuildDate>Fri, 18 Dec 2015 21:57:18 +1000</lastBuildDate>
     <generator>Jekyll v3.0.1</generator>
     
       <item>
@@ -30,13 +30,15 @@ var CODE_OUTPUT_CACHE = &quot;&quot;;
 document.addEventListener(&quot;DOMContentLoaded&quot;, function() {
     userInput = document.getElementById(&#39;userInput&#39;);
     codeOutput = document.getElementById(&#39;codeOutput&#39;);
+    topicInput = document.getElementById(&#39;topicInput&#39;);
 
-    userInput.addEventListener(&#39;keyup&#39;, function() {
-    	updateCode();
-    })
+    userInput.addEventListener(&#39;keyup&#39;, updateCode);
+    topicInput.addEventListener(&#39;keyup&#39;, updateCode);
 
     userInput.addEventListener(&#39;keydown&#39;, allowTabbing)
     codeOutput.addEventListener(&#39;keydown&#39;, allowTabbing)
+
+    updateCode();
 });
 
 var allowTabbing = function(e) {
@@ -52,6 +54,7 @@ var allowTabbing = function(e) {
 }
 
 var updateCode = function() {
+	console.log(&quot;updated&quot;);
 	var lineList = userInput.value.split(&quot;\n&quot;)
 	for (var i=0; i &lt; lineList.length; i++) {
 		if (lineList[i].trim() == &quot;&quot;) {
@@ -59,17 +62,24 @@ var updateCode = function() {
 			i--;
 		}
 	}
-	var topic = &quot;topic&quot;;
+
+	var topic = topicInput.value;
+	if (!topic) {
+		topic = &quot;topicName&quot;
+	}
 	CODE_OUTPUT_CACHE = HEADER.replace(&quot;{ topic }&quot;, topic);
-	var initialStatement = lineList.splice(0, 1);
-	CODE_OUTPUT_CACHE += 
+
+	var initialStatement = lineList.splice(0, 1)[0];
+	makeCategory()
 	makeAiml(initialStatement, lineList);
 	codeOutput.value = CODE_OUTPUT_CACHE;
 }
 
 var makeAiml = function(that, lineList) {
 	var last = lineList.length;
+	console.log(lineList);
 	if (last &gt;= 2) {
+		console.log(&quot;executed&quot;);
 		var pattern = lineList[0].trim();
 		var template = lineList[1].trim();
 
@@ -82,7 +92,7 @@ var makeAiml = function(that, lineList) {
 			}
 		}
 		lineList.splice(0, 2);
-		makeAiml(template, lineList.splice(0, last));
+		makeAiml(template, lineList.splice(0, last + 1));
 		return makeAiml(that, lineList)
 	}
 }
@@ -132,15 +142,17 @@ function validateTopic(i) {
 
 &lt;h4&gt; Conversation Tree &lt;/h4&gt;
 
-&lt;p&gt;&lt;input type=&quot;text&quot; class=&quot;user-input-blur&quot; id=&quot;topic&quot; value=&quot;Topic Name&quot; onfocus=&quot;inputFocus(this)&quot; onblur=&quot;inputBlur(this); validateTopic(this)&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;input type=&quot;text&quot; class=&quot;user-input-blur&quot; id=&quot;topicInput&quot; value=&quot;Topic Name&quot; onfocus=&quot;inputFocus(this)&quot; onblur=&quot;inputBlur(this); validateTopic(this)&quot; /&gt;&lt;/p&gt;
 
-&lt;textarea id=&quot;userInput&quot; class=&quot;user-input-textarea&quot;&gt;Hello, what is your favourite robot?
-	*
-		Wow, that is a cool robot! My favourite is Asimo. What do you like about your robot?
-			*
-				I can see why you like it, that sounds very cool.
-	$DONT KNOW
-		That&#39;s okay, my favourite is Opie. We can talk about something else.&lt;/textarea&gt;
+&lt;textarea id=&quot;userInput&quot; class=&quot;user-input-textarea&quot;&gt;What did you get up to last weekend?
+	^ already ^
+	Sorry, I must have forgotten. &lt;oob&gt;eoc&lt;/oob&gt;&lt;srai&gt;NEWTOPIC&lt;/srai&gt;
+	
+	DONOTKNOW
+	Never mind. &lt;oob&gt;eoc&lt;/oob&gt;&lt;srai&gt;NEWTOPIC&lt;/srai&gt;
+
+	$NO ^
+	Oh okay, we can talk about something else. &lt;oob&gt;eoc&lt;/oob&gt;&lt;srai&gt;NEWTOPIC&lt;/srai&gt;&lt;/textarea&gt;
 
 &lt;h4&gt; AIML Output &lt;/h4&gt;
 
@@ -152,8 +164,8 @@ This is where the submission form will go.
 &lt;/p&gt;
 </description>
         <pubDate>Thu, 17 Dec 2015 21:58:03 +1000</pubDate>
-        <link>http://joshuariddell.github.io/harley-parser/conversation-tree</link>
-        <guid isPermaLink="true">http://joshuariddell.github.io/harley-parser/conversation-tree</guid>
+        <link>http://joshuariddell.github.io/harley-tools/conversation-tree</link>
+        <guid isPermaLink="true">http://joshuariddell.github.io/harley-tools/conversation-tree</guid>
         
         
         <category>jekyll</category>

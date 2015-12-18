@@ -14,13 +14,15 @@ var CODE_OUTPUT_CACHE = "";
 document.addEventListener("DOMContentLoaded", function() {
     userInput = document.getElementById('userInput');
     codeOutput = document.getElementById('codeOutput');
+    topicInput = document.getElementById('topicInput');
 
-    userInput.addEventListener('keyup', function() {
-    	updateCode();
-    })
+    userInput.addEventListener('keyup', updateCode);
+    topicInput.addEventListener('keyup', updateCode);
 
     userInput.addEventListener('keydown', allowTabbing)
     codeOutput.addEventListener('keydown', allowTabbing)
+
+    updateCode();
 });
 
 var allowTabbing = function(e) {
@@ -36,6 +38,7 @@ var allowTabbing = function(e) {
 }
 
 var updateCode = function() {
+	console.log("updated");
 	var lineList = userInput.value.split("\n")
 	for (var i=0; i < lineList.length; i++) {
 		if (lineList[i].trim() == "") {
@@ -43,17 +46,24 @@ var updateCode = function() {
 			i--;
 		}
 	}
-	var topic = "topic";
+
+	var topic = topicInput.value;
+	if (!topic) {
+		topic = "topicName"
+	}
 	CODE_OUTPUT_CACHE = HEADER.replace("{ topic }", topic);
-	var initialStatement = lineList.splice(0, 1);
-	CODE_OUTPUT_CACHE += 
+
+	var initialStatement = lineList.splice(0, 1)[0];
+	makeCategory()
 	makeAiml(initialStatement, lineList);
 	codeOutput.value = CODE_OUTPUT_CACHE;
 }
 
 var makeAiml = function(that, lineList) {
 	var last = lineList.length;
+	console.log(lineList);
 	if (last >= 2) {
+		console.log("executed");
 		var pattern = lineList[0].trim();
 		var template = lineList[1].trim();
 
@@ -66,7 +76,7 @@ var makeAiml = function(that, lineList) {
 			}
 		}
 		lineList.splice(0, 2);
-		makeAiml(template, lineList.splice(0, last));
+		makeAiml(template, lineList.splice(0, last + 1));
 		return makeAiml(that, lineList)
 	}
 }
@@ -116,15 +126,17 @@ function validateTopic(i) {
 
 <h4> Conversation Tree </h4>
 
-<input type="text" class="user-input-blur" id="topic" value="Topic Name" onfocus="inputFocus(this)" onBlur="inputBlur(this); validateTopic(this)">
+<input type="text" class="user-input-blur" id="topicInput" value="Topic Name" onfocus="inputFocus(this)" onBlur="inputBlur(this); validateTopic(this)">
 
-<textarea id="userInput" class="user-input-textarea">Hello, what is your favourite robot?
-	*
-		Wow, that is a cool robot! My favourite is Asimo. What do you like about your robot?
-			*
-				I can see why you like it, that sounds very cool.
-	$DONT KNOW
-		That's okay, my favourite is Opie. We can talk about something else.</textarea>
+<textarea id="userInput" class="user-input-textarea">What did you get up to last weekend?
+	^ already ^
+	Sorry, I must have forgotten. <oob>eoc</oob><srai>NEWTOPIC</srai>
+	
+	DONOTKNOW
+	Never mind. <oob>eoc</oob><srai>NEWTOPIC</srai>
+
+	$NO ^
+	Oh okay, we can talk about something else. <oob>eoc</oob><srai>NEWTOPIC</srai></textarea>
 
 <h4> AIML Output </h4>
 

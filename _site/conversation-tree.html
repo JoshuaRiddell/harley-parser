@@ -9,9 +9,9 @@
   <title>Conversation Tree</title>
   <meta name="description" content="Type your conversation tree into the top box and see the generated code below. When you are happy with your conversation, use the form at the bottom to submi...">
 
-  <link rel="stylesheet" href="/harley-parser/css/main.css">
-  <link rel="canonical" href="http://joshuariddell.github.io/harley-parser/conversation-tree">
-  <link rel="alternate" type="application/rss+xml" title="Harlie Development Tools" href="http://joshuariddell.github.io/harley-parser/feed.xml">
+  <link rel="stylesheet" href="/harley-tools/css/main.css">
+  <link rel="canonical" href="http://joshuariddell.github.io/harley-tools/conversation-tree">
+  <link rel="alternate" type="application/rss+xml" title="Harlie Development Tools" href="http://joshuariddell.github.io/harley-tools/feed.xml">
 </head>
 
 
@@ -21,7 +21,7 @@
 
   <div class="wrapper">
 
-    <a class="site-title" href="/harley-parser/">Harlie Development Tools</a>
+    <a class="site-title" href="/harley-tools/">Harlie Development Tools</a>
 
     <nav class="site-nav">
       <a href="#" class="menu-icon">
@@ -35,7 +35,7 @@
       <div class="trigger">
         
           
-          <a class="page-link" href="/harley-parser/about/">About</a>
+          <a class="page-link" href="/harley-tools/about/">About</a>
           
         
           
@@ -80,13 +80,15 @@ var CODE_OUTPUT_CACHE = "";
 document.addEventListener("DOMContentLoaded", function() {
     userInput = document.getElementById('userInput');
     codeOutput = document.getElementById('codeOutput');
+    topicInput = document.getElementById('topicInput');
 
-    userInput.addEventListener('keyup', function() {
-    	updateCode();
-    })
+    userInput.addEventListener('keyup', updateCode);
+    topicInput.addEventListener('keyup', updateCode);
 
     userInput.addEventListener('keydown', allowTabbing)
     codeOutput.addEventListener('keydown', allowTabbing)
+
+    updateCode();
 });
 
 var allowTabbing = function(e) {
@@ -102,6 +104,7 @@ var allowTabbing = function(e) {
 }
 
 var updateCode = function() {
+	console.log("updated");
 	var lineList = userInput.value.split("\n")
 	for (var i=0; i < lineList.length; i++) {
 		if (lineList[i].trim() == "") {
@@ -109,17 +112,24 @@ var updateCode = function() {
 			i--;
 		}
 	}
-	var topic = "topic";
+
+	var topic = topicInput.value;
+	if (!topic) {
+		topic = "topicName"
+	}
 	CODE_OUTPUT_CACHE = HEADER.replace("{ topic }", topic);
-	var initialStatement = lineList.splice(0, 1);
-	CODE_OUTPUT_CACHE += 
+
+	var initialStatement = lineList.splice(0, 1)[0];
+	makeCategory()
 	makeAiml(initialStatement, lineList);
 	codeOutput.value = CODE_OUTPUT_CACHE;
 }
 
 var makeAiml = function(that, lineList) {
 	var last = lineList.length;
+	console.log(lineList);
 	if (last >= 2) {
+		console.log("executed");
 		var pattern = lineList[0].trim();
 		var template = lineList[1].trim();
 
@@ -132,7 +142,7 @@ var makeAiml = function(that, lineList) {
 			}
 		}
 		lineList.splice(0, 2);
-		makeAiml(template, lineList.splice(0, last));
+		makeAiml(template, lineList.splice(0, last + 1));
 		return makeAiml(that, lineList)
 	}
 }
@@ -182,15 +192,17 @@ function validateTopic(i) {
 
 <h4> Conversation Tree </h4>
 
-<p><input type="text" class="user-input-blur" id="topic" value="Topic Name" onfocus="inputFocus(this)" onblur="inputBlur(this); validateTopic(this)" /></p>
+<p><input type="text" class="user-input-blur" id="topicInput" value="Topic Name" onfocus="inputFocus(this)" onblur="inputBlur(this); validateTopic(this)" /></p>
 
-<textarea id="userInput" class="user-input-textarea">Hello, what is your favourite robot?
-	*
-		Wow, that is a cool robot! My favourite is Asimo. What do you like about your robot?
-			*
-				I can see why you like it, that sounds very cool.
-	$DONT KNOW
-		That's okay, my favourite is Opie. We can talk about something else.</textarea>
+<textarea id="userInput" class="user-input-textarea">What did you get up to last weekend?
+	^ already ^
+	Sorry, I must have forgotten. <oob>eoc</oob><srai>NEWTOPIC</srai>
+	
+	DONOTKNOW
+	Never mind. <oob>eoc</oob><srai>NEWTOPIC</srai>
+
+	$NO ^
+	Oh okay, we can talk about something else. <oob>eoc</oob><srai>NEWTOPIC</srai></textarea>
 
 <h4> AIML Output </h4>
 
@@ -229,7 +241,7 @@ This is where the submission form will go.
 
   <div class="footer-col-wrapper">
 
-    <img class="banner" src="/harley-parser/img/footer-banner.png" alt="Footer Banner Logos">
+    <img class="banner" src="/harley-tools/img/footer-banner.png" alt="Footer Banner Logos">
 
   </div>
 
