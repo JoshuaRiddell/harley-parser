@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     userInput.addEventListener('keyup', updateCode);
     topicInput.addEventListener('keyup', updateCode);
+    topicInput.addEventListener('blur', updateCode);
 
     userInput.addEventListener('keydown', allowTabbing)
     codeOutput.addEventListener('keydown', allowTabbing)
