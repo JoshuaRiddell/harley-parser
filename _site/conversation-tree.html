@@ -67,35 +67,134 @@
 <script type="text/javascript">
 
 var HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<aiml version=\"1.0\">\n\n<!-- { topic } topic -->\n\n";
-var CATEGORY = "<category>\n{ arguments }\n</category>";
+var CATEGORY = "<category>\n{ args }\n</category>\n\n";
 
 var CAT_ARGS = [
-    "   <pattern>  </pattern>\n",
-    "   <that>  </that>\n",
-    "   <template>  </template>"
+    "   <pattern> { args } </pattern>\n",
+    "   <that> { args } </that>\n",
+    "   <template> { args } </template>"
 ];
+
+var CODE_OUTPUT_CACHE = "";
 
 document.addEventListener("DOMContentLoaded", function() {
     userInput = document.getElementById('userInput');
     codeOutput = document.getElementById('codeOutput');
 
-    userInput.addEventListener('change')
+    userInput.addEventListener('keyup', function() {
+    	updateCode();
+    })
 
-    console.log(userInput.value, codeOutput.value);
+    userInput.addEventListener('keydown', allowTabbing)
+    codeOutput.addEventListener('keydown', allowTabbing)
 });
 
+var allowTabbing = function(e) {
+	// allow the user to tab indent in text areas.
+	if (e.keyCode == 9 || e.which == 9) {
+		e.preventDefault();
+		var start = this.selectionStart;
+		this.value = this.value.substring(0,this.selectionStart) +
+					 "\t" +
+					 this.value.substring(this.selectionEnd);
+		this.selectionEnd = start + 1;
+	}
+}
 
+var updateCode = function() {
+	var lineList = userInput.value.split("\n")
+	for (var i=0; i < lineList.length; i++) {
+		if (lineList[i].trim() == "") {
+			lineList.splice(i, 1);
+			i--;
+		}
+	}
+	var topic = "topic";
+	CODE_OUTPUT_CACHE = HEADER.replace("{ topic }", topic);
+	var initialStatement = lineList.splice(0, 1);
+	CODE_OUTPUT_CACHE += 
+	makeAiml(initialStatement, lineList);
+	codeOutput.value = CODE_OUTPUT_CACHE;
+}
 
+var makeAiml = function(that, lineList) {
+	var last = lineList.length;
+	if (last >= 2) {
+		var pattern = lineList[0].trim();
+		var template = lineList[1].trim();
+
+		CODE_OUTPUT_CACHE += makeCategory(pattern, that, template);
+
+		var space = getIndent(lineList[0]);
+		for (var i=2; i < lineList.length; i++) {
+			if (space == getIndent(lineList[i])) {
+				last = i;
+			}
+		}
+		lineList.splice(0, 2);
+		makeAiml(template, lineList.splice(0, last));
+		return makeAiml(that, lineList)
+	}
+}
+
+var getIndent = function(string) {
+	return string.length - string.replace(/^\s+/, "").length;
+}
+
+var makeCategory = function(pattern, that, template) {
+	var category = CATEGORY;
+	args = "";
+
+	var argList = [pattern, that, template];
+	for (var i=0; i < argList.length; i++) {
+		if (!argList[i] == "") {
+			args += CAT_ARGS[i].replace("{ args }", argList[i].trim())
+		}
+	}
+	category = category.replace("{ args }", args);
+	return category
+}
+
+function inputFocus(i) {
+	if (i.value == i.defaultValue) {
+		i.value = "";
+		i.style.color = "#000";
+	}
+}
+
+function inputBlur(i) {
+	if (i.value == "") {
+		i.value = i.defaultValue;
+		i.style.color = "#888";
+	}
+}
+
+function validateTopic(i) {
+	var newVal = i.value.trim();
+	newVal = newVal.replace(/\s+[a-z]/g, function(match) {
+		return match.trim().toUpperCase();
+	});
+	newVal = newVal.replace(/\s^/, "");
+	i.value = newVal;
+}
 
 </script>
 
 <h4> Conversation Tree </h4>
 
-<textarea id="userInput" class="user-input">Hello world</textarea>
+<p><input type="text" class="user-input-blur" id="topic" value="Topic Name" onfocus="inputFocus(this)" onblur="inputBlur(this); validateTopic(this)" /></p>
+
+<textarea id="userInput" class="user-input-textarea">Hello, what is your favourite robot?
+	*
+		Wow, that is a cool robot! My favourite is Asimo. What do you like about your robot?
+			*
+				I can see why you like it, that sounds very cool.
+	$DONT KNOW
+		That's okay, my favourite is Opie. We can talk about something else.</textarea>
 
 <h4> AIML Output </h4>
 
-<textarea id="codeOutput" class="user-input">Hello world</textarea>
+<textarea id="codeOutput" class="user-input-textarea" value=""></textarea>
 
 <h4> Submission </h4>
 <p>
