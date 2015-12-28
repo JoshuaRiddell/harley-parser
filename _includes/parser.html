@@ -131,15 +131,7 @@ function validateTopic(i) {
 
 <input type="text" class="user-input-blur" id="topicInput" value="Topic Name" onfocus="inputFocus(this)" onBlur="inputBlur(this); validateTopic(this)">
 
-<textarea id="userInput" class="user-input-textarea">What did you get up to last weekend?
-	^ already ^
-	Sorry, I must have forgotten. <oob>eoc</oob><srai>NEWTOPIC</srai>
-	
-	DONOTKNOW
-	Never mind. <oob>eoc</oob><srai>NEWTOPIC</srai>
-
-	$NO ^
-	Oh okay, we can talk about something else. <oob>eoc</oob><srai>NEWTOPIC</srai></textarea>
+<textarea class="user-input-textarea-blur" id="userInput" onfocus="inputFocus(this)" onblur="inputBlur(this)">Conversation Tree</textarea>
 
 <h4> AIML Output </h4>
 
