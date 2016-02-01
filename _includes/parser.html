@@ -1,16 +1,18 @@
 <script type="text/javascript">
 
+// define AIML syntax
 var HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<aiml version=\"1.0\">\n\n<!-- { topic } topic -->\n\n";
 var CATEGORY = "<category>\n{ args }\n</category>\n\n";
-
 var CAT_ARGS = [
     "   <pattern> { args } </pattern>\n",
     "   <that> { args } </that>\n",
     "   <template> { args } </template>"
 ];
 
+// used to store the currently parsed code
 var CODE_OUTPUT_CACHE = "";
 
+// add event listeners when page is loaded
 document.addEventListener("DOMContentLoaded", function() {
     userInput = document.getElementById('userInput');
     codeOutput = document.getElementById('codeOutput');
@@ -26,8 +28,9 @@ document.addEventListener("DOMContentLoaded", function() {
     updateCode();
 });
 
+
+// allow the user to tab indent in text areas.
 var allowTabbing = function(e) {
-	// allow the user to tab indent in text areas.
 	if (e.keyCode == 9 || e.which == 9) {
 		e.preventDefault();
 		var start = this.selectionStart;
@@ -38,6 +41,7 @@ var allowTabbing = function(e) {
 	}
 }
 
+// update the code textarea
 var updateCode = function() {
 	console.log("updated");
 	var lineList = userInput.value.split("\n")
@@ -61,6 +65,7 @@ var updateCode = function() {
 	codeOutput.value = CODE_OUTPUT_CACHE;
 }
 
+// recursive function used to parse the conversation tree into linear code
 var makeAiml = function(that, lineList) {
 	var last = lineList.length;
 	console.log(lineList);
@@ -84,10 +89,12 @@ var makeAiml = function(that, lineList) {
 	}
 }
 
+// returns the number of whitespace characters at the start of the string
 var getIndent = function(string) {
 	return string.length - string.replace(/^\s+/, "").length;
 }
 
+// inserts the arguments into the category template
 var makeCategory = function(pattern, that, template) {
 	var category = CATEGORY;
 	args = "";
@@ -102,6 +109,7 @@ var makeCategory = function(pattern, that, template) {
 	return category
 }
 
+// ran when an input is focussed, makes nice text
 function inputFocus(i) {
 	if (i.value == i.defaultValue) {
 		i.value = "";
@@ -109,6 +117,7 @@ function inputFocus(i) {
 	}
 }
 
+// ran when an input is blurred, makes nice text
 function inputBlur(i) {
 	if (i.value == "") {
 		i.value = i.defaultValue;
@@ -116,6 +125,7 @@ function inputBlur(i) {
 	}
 }
 
+// validates the topic name to camelcase with no spaces
 function validateTopic(i) {
 	var newVal = i.value.trim();
 	newVal = newVal.replace(/\s+[a-z]/g, function(match) {
