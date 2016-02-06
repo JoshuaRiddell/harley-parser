@@ -12,19 +12,28 @@ var CAT_ARGS = [
 // used to store the currently parsed code
 var CODE_OUTPUT_CACHE = "";
 
+const CONTRACTIONS = {
+	"they're": "they are",
+	"we're": "we are",
+}
+
 // add event listeners when page is loaded
 document.addEventListener("DOMContentLoaded", function() {
     userInput = document.getElementById('userInput');
     codeOutput = document.getElementById('codeOutput');
     topicInput = document.getElementById('topicInput');
 
+    // code is updated when topic and conv tree are updated and blurred
     userInput.addEventListener('keyup', updateCode);
+    userInput.addEventListener('blur', updateCode);
     topicInput.addEventListener('keyup', updateCode);
     topicInput.addEventListener('blur', updateCode);
 
+    // catches tab and prevents change of focus
     userInput.addEventListener('keydown', allowTabbing)
     codeOutput.addEventListener('keydown', allowTabbing)
 
+    // updates code to show skeleton
     updateCode();
 });
 
@@ -33,6 +42,8 @@ document.addEventListener("DOMContentLoaded", function() {
 var allowTabbing = function(e) {
 	if (e.keyCode == 9 || e.which == 9) {
 		e.preventDefault();
+
+		// add tab character
 		var start = this.selectionStart;
 		this.value = this.value.substring(0,this.selectionStart) +
 					 "\t" +
@@ -43,7 +54,7 @@ var allowTabbing = function(e) {
 
 // update the code textarea
 var updateCode = function() {
-	console.log("updated");
+	// get list of user input lines and remove blank lines
 	var lineList = userInput.value.split("\n")
 	for (var i=0; i < lineList.length; i++) {
 		if (lineList[i].trim() == "") {
@@ -53,14 +64,17 @@ var updateCode = function() {
 	}
 
 	var topic = topicInput.value;
+	// check if topic name is default
 	if (topic == "Topic Name") {
 		topic = "topicName"
 	}
 	CODE_OUTPUT_CACHE = HEADER.replace("{ topic }", topic);
 
+	// create first AIML statement separately since it is an exception
 	var initialStatement = lineList.splice(0, 1)[0];
 	CODE_OUTPUT_CACHE += makeCategory(topic.toLowerCase() + "topic", null, initialStatement);
 
+	// recursively scan the conversation tree and push AIML to the end of CODE_OUTPUT_CACHE
 	makeAiml(initialStatement, lineList);
 	codeOutput.value = CODE_OUTPUT_CACHE;
 }
@@ -68,9 +82,9 @@ var updateCode = function() {
 // recursive function used to parse the conversation tree into linear code
 var makeAiml = function(that, lineList) {
 	var last = lineList.length;
-	console.log(lineList);
+
+	// check if there are enough arguments for both pattern and template
 	if (last >= 2) {
-		console.log("executed");
 		var pattern = lineList[0].trim();
 		var template = lineList[1].trim();
 
@@ -98,6 +112,20 @@ var getIndent = function(string) {
 var makeCategory = function(pattern, that, template) {
 	var category = CATEGORY;
 	args = "";
+
+	if (that != null) {
+		var sentences = that.split(".");
+		var that = "";
+		for (var i=0; i < sentences.length; i++) {
+			if (sentences[i].trim() != "") {
+				that = sentences[i].trim();
+			}
+		}
+		that = that.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");  // remove punctuation
+		that = that.replace(/\s{2,}/g," ");  // collapse multiple spaces
+		that = that.toLowerCase();
+	}
+	
 
 	var argList = [pattern, that, template];
 	for (var i=0; i < argList.length; i++) {
