@@ -11,14 +11,14 @@ email: joshua.riddell@gmail.com
 
 dev_desc: "For feature requests and bug reports, please contact Josh:"
 dev_email: joshua.riddell11@gmail.com
-linguist_desc: >
-  For guidance on how to structure your conversations and to get involved in
-  the harlie project, please contact Christina:
-linguist_email: c.knuepffer@uq.edu.au
 github_desc: >
   If you would like to contribute to the tools on this site check out
   the github repository:
 github_url: https://github.com/JoshuaRiddell/harlie-tools/tree/gh-pages
+linguist_desc: >
+  For guidance on how to structure your conversations and to get involved in
+  the harlie project, please contact Dr Christina Knuepffer:
+linguist_email: c.knuepffer@uq.edu.au
 
 description: > # this means to ignore newlines until "baseurl:"
   Some quick scripts developed to help with development of Harlie's
