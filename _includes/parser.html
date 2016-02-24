@@ -98,7 +98,7 @@ var makeAiml = function(that, lineList) {
 			}
 		}
 		lineList.splice(0, 2);
-		makeAiml(template, lineList.splice(0, last - 1));
+		makeAiml(template, lineList.splice(0, last - 2));
 		return makeAiml(that, lineList)
 	}
 }
@@ -121,7 +121,7 @@ var makeCategory = function(pattern, that, template) {
 				that = sentences[i].trim();
 			}
 		}
-		that = that.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");  // remove punctuation
+		that = that.replace(/[?.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");  // remove punctuation
 		that = that.replace(/\s{2,}/g," ");  // collapse multiple spaces
 		that = that.toLowerCase();
 	}
