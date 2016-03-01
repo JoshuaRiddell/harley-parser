@@ -4,7 +4,7 @@ A website containing useful tools used in the development of conversations for H
 
 ## Development Plan
 
-- Add support for "that" tag formatting in the parser
+- Add support for lists
 - Add AIML code submission feature
 - Embed AIML interpreter for code testing
 - Facility to save code
