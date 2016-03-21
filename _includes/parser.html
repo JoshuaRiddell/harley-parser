@@ -71,7 +71,7 @@ var updateCode = function() {
 	CODE_OUTPUT_CACHE = HEADER.replace("{ topic }", topic);
 
 	// create first AIML statement separately since it is an exception
-	var initialStatement = lineList.splice(0, 1)[0];
+	var initialStatement = removeIndent(lineList.splice(0, 1)[0]);
 	CODE_OUTPUT_CACHE += makeCategory(topic.toLowerCase() + "topic", null, initialStatement);
 
 	// recursively scan the conversation tree and push AIML to the end of CODE_OUTPUT_CACHE
@@ -85,8 +85,8 @@ var makeAiml = function(that, lineList) {
 
 	// check if there are enough arguments for both pattern and template
 	if (last >= 2) {
-		var pattern = lineList[0].trim();
-		var template = lineList[1].trim();
+		var pattern = removeIndent(lineList[0]);
+		var template = removeIndent(lineList[1].trim());
 
 		CODE_OUTPUT_CACHE += makeCategory(pattern, that, template);
 
@@ -105,7 +105,11 @@ var makeAiml = function(that, lineList) {
 
 // returns the number of whitespace characters at the start of the string
 var getIndent = function(string) {
-	return string.length - string.replace(/^\s+/, "").length;
+	return string.length - string.replace(/^-+/, "").length;
+}
+
+var removeIndent = function(string) {
+	return string.replace(/^-*>/, "")
 }
 
 // inserts the arguments into the category template
