@@ -217,6 +217,10 @@
     width: 100%;
     margin-bottom: $spacing-unit/2;
     color: #888;
+    margin-left: 2px;
+    margin-top: 4px;
+    padding: 2px;
+    border-width: 1px;
 }
 
 .user-input-textarea {
@@ -224,6 +228,8 @@
     resize: vertical;
     height: 200px;
     margin-bottom: $spacing-unit;
+    margin-left: 2px;
+    margin-top: 4px;
 }
 
 .user-input-textarea-blur {
@@ -272,18 +278,19 @@
     float: left;
     margin-bottom: $spacing-unit / 2;
     padding-left: $spacing-unit / 2;
+    padding-right: $spacing-unit / 2;
 }
 
 .editor-col-1 {
-    width: -webkit-calc(50% - (#{$spacing-unit} / 2));
-    width:         calc(50% - (#{$spacing-unit} / 2));
+    width: -webkit-calc(50% - #{$spacing-unit});
+    width:         calc(50% - #{$spacing-unit});
 }
 
+.editor-col-2 {
+    width: -webkit-calc(50% - #{$spacing-unit});
+    width:         calc(50% - #{$spacing-unit});
+}
 
-@include media-query($on-laptop) {
-    .editor-col-1,
-    .editor-col-2 {
-        width: -webkit-calc(50% - (#{$spacing-unit} / 2));
-        width:         calc(50% - (#{$spacing-unit} / 2));
-    }
+.chat-embed {
+    width: 100%;
 }
