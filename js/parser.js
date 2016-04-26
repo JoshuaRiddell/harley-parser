@@ -54,27 +54,36 @@ var allowTabbing = function(e) {
 var updateCode = function() {
 	// get list of user input lines and remove blank lines
 	var lineList = userInput.value.split("\n")
-	for (var i=0; i < lineList.length; i++) {
-		if (lineList[i].trim() == "") {
-			lineList.splice(i, 1);
-			i--;
+	if (lineList == "Conversation Tree") {
+		
+	} else {
+		for (var i=0; i < lineList.length; i++) {
+			if (lineList[i].trim() == "") {
+				lineList.splice(i, 1);
+				i--;
+			}
 		}
+
+		// create first AIML statement separately since it is an exception
+		var initialStatement = removeIndent(lineList.splice(0, 1)[0]);
 	}
 
 	var topic = topicInput.value;
 	// check if topic name is default
 	if (topic == "Topic Name") {
 		topic = "topicName"
+		CODE_OUTPUT_CACHE = HEADER.replace("{ topic }", "");
+		CODE_OUTPUT_CACHE += makeCategory("topic", null, initialStatement);
+	} else {
+		CODE_OUTPUT_CACHE = HEADER.replace("{ topic }", topic.toLowerCase().trim());
+		CODE_OUTPUT_CACHE += makeCategory(camelise(topic) + "Topic", null, initialStatement);
 	}
-	CODE_OUTPUT_CACHE = HEADER.replace("{ topic }", topic);
 
-	// create first AIML statement separately since it is an exception
-	var initialStatement = removeIndent(lineList.splice(0, 1)[0]);
-	CODE_OUTPUT_CACHE += makeCategory(topic.toLowerCase() + "topic", null, initialStatement);
-
-	// recursively scan the conversation tree and push AIML to the end of CODE_OUTPUT_CACHE
-	makeAiml(initialStatement, lineList);
-	codeOutput.value = CODE_OUTPUT_CACHE;
+	if (lineList == "Conversation Tree") {
+		// recursively scan the conversation tree and push AIML to the end of CODE_OUTPUT_CACHE
+		makeAiml(initialStatement, lineList);
+		codeOutput.value = CODE_OUTPUT_CACHE;
+	}
 }
 
 // recursive function used to parse the conversation tree into linear code
@@ -156,11 +165,13 @@ function inputBlur(i) {
 }
 
 // validates the topic name to camelcase with no spaces
-function validateTopic(i) {
-	var newVal = i.value.trim();
-	newVal = newVal.replace(/\s+[a-z]/g, function(match) {
-		return match.trim().toUpperCase();
-	});
-	newVal = newVal.replace(/\s^/, "");
-	i.value = newVal;
+function camelise(str) {
+	var newVal = str.trim();
+
+	// turn into camel case
+	newVal = newVal.replace(/(?:^\w|[A-Z]|\b\w)/g, function(letter, index) {
+	    return index == 0 ? letter.toLowerCase() : letter.toUpperCase();
+	  }).replace(/\s+/g, '');
+
+	return newVal;
 }

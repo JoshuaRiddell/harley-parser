@@ -235,6 +235,7 @@
 .user-input-textarea-blur {
     @extend .user-input-textarea;
     color: #888;
+    height: 616px;
 }
 
 .post-content {
@@ -293,4 +294,5 @@
 
 .chat-embed {
     width: 100%;
+    height: 400px;
 }
