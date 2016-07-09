@@ -6,14 +6,11 @@ var CAT_ARGS = [
     "   <that> { args } </that>\n",
     "   <template> { args } </template>"
 ];
+var RANDOM = "\n\t\t<random>\n{ args }\n\t\t</random>";
+var LIST = "\t\t\t<li> { args } </li>";
 
 // used to store the currently parsed code
 var CODE_OUTPUT_CACHE = "";
-
-const CONTRACTIONS = {
-	"they're": "they are",
-	"we're": "we are",
-}
 
 // add event listeners when page is loaded
 document.addEventListener("DOMContentLoaded", function() {
@@ -79,11 +76,12 @@ var updateCode = function() {
 		CODE_OUTPUT_CACHE += makeCategory(camelise(topic) + "Topic", null, initialStatement);
 	}
 
-	if (lineList == "Conversation Tree") {
+	if (lineList != "Conversation Tree") {
 		// recursively scan the conversation tree and push AIML to the end of CODE_OUTPUT_CACHE
 		makeAiml(initialStatement, lineList);
-		codeOutput.value = CODE_OUTPUT_CACHE;
 	}
+
+	codeOutput.value = CODE_OUTPUT_CACHE;
 }
 
 // recursive function used to parse the conversation tree into linear code
@@ -94,6 +92,19 @@ var makeAiml = function(that, lineList) {
 	if (last >= 2) {
 		var pattern = removeIndent(lineList[0]);
 		var template = removeIndent(lineList[1].trim());
+
+		if (lineList.length > 2 && !lineList[2].includes(">")) {
+			var lastRandom = 2;
+			for (var i=2; i < lineList.length; i++) {
+				console.log(lineList[i].includes(">"))
+				if (!lineList[i].includes(">")) {
+					lastRandom = i;
+				} else {
+					break;
+				}
+			}
+			console.log(lastRandom);
+		}
 
 		CODE_OUTPUT_CACHE += makeCategory(pattern, that, template);
 
@@ -125,16 +136,15 @@ var makeCategory = function(pattern, that, template) {
 	args = "";
 
 	if (that != null) {
-		var sentences = that.split(".");
+		var sentences = that.split(/[?.!]/g);
 		var that = "";
 		for (var i=0; i < sentences.length; i++) {
 			if (sentences[i].trim() != "") {
 				that = sentences[i].trim();
 			}
 		}
-		that = that.replace(/[?.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");  // remove punctuation
+		that = that.replace(/[?.,\/#!$%\^&\*;:{}=\-_`\'~()]/g,"");  // remove punctuation
 		that = that.replace(/\s{2,}/g," ");  // collapse multiple spaces
-		that = that.toLowerCase();
 	}
 	
 
